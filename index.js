@@ -5,18 +5,22 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_TEST);
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
+// responds "Hello World"
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
+// middleware parsing incoming requests
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(cors());
 
+// handles post request
 app.post("/payment", cors(), async (req, res) => {
   let { amount, id } = req.body;
   try {
+    // set payments parameters
     const payment = await stripe.paymentIntents.create({
       amount,
       currency: "GBP",
